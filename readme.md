@@ -15,16 +15,16 @@ Elementic, um plugin/extensão que adiciona o Mautic ao seu formulário do Eleme
 https://www.youtube.com/watch?v=GqcOK4Cuk2g
 
 
-# Installation ==
+# Installation
 
-## Minimum Requirements =
+## Minimum Requirements
 
 * WordPress 5.0 or greater
 * PHP version 5.6 or greater
 * MySQL version 5.0 or greater
 * Elementor Pro Installed
 
-= We recommend your host supports: =
+= We recommend your host supports:
 
 * PHP version 7.0 or greater
 * MySQL version 5.6 or greater
