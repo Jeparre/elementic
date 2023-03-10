@@ -65,28 +65,50 @@
                 return;
             }
 
-
-
-            // Get sumitetd Form data
+            // Get submitted Form data
             $raw_fields = $record->get( 'fields' );
 
             // Normalize the Form Data
             $fields = [
-                'formId' => $settings['mautic_form_id']
+                'formId' =>  $settings['mautic_form_id']
             ];
+            
             foreach ( $raw_fields as $id => $field ) {
                 $fields[ $id ] = $field['value'];
             }
-        
-        
 
-            $response = wp_remote_post(rtrim($settings['mautic_url']['url'],"/")."/form/submit?formId=".$settings['mautic_form_id'], [
+			$utm="";
+
+            if (!empty($raw_fields['utm_source']['value'])){
+                   $utm .= "&utm_source=".$raw_fields['utm_source']['value'];
+               }
+            if (!empty($raw_fields['utm_medium']['value'])){
+                   $utm .= "&utm_medium=".$raw_fields['utm_medium']['value'];
+               }
+            if (!empty($raw_fields['utm_campaign']['value'])){
+                   $utm .= "&utm_campaign=".$raw_fields['utm_campaign']['value'];
+               }
+            if (!empty($raw_fields['utm_content']['value'])){
+                   $utm .= "&utm_content=".$raw_fields['utm_content']['value'];
+               }
+            if (!empty($raw_fields['utm_term']['value'])){
+                   $utm .= "&utm_term=".$raw_fields['utm_term']['value'];
+               } 
+			
+			if (!empty($utm)){
+				$url = rtrim($settings['mautic_url']['url'],"/")."/form/submit?formId=".$settings['mautic_form_id']."&".$utm;
+			} else {
+				$url = rtrim($settings['mautic_url']['url'],"/")."/form/submit?formId=".$settings['mautic_form_id'];
+			}
+			
+           
+            $response = wp_remote_post($url, [
                 'body' => ["mauticform" => $fields],
+				'headers' => [ 'Client-Ip' => $_SERVER[ "REMOTE_ADDR" ]],
                 'headers' => [ 'X-Forwarded-For' => $_SERVER[ "REMOTE_ADDR" ]]
             ] );
+            
         }
-
-
 
         public function on_export( $element ) {
             return $element;
